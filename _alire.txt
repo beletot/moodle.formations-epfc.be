@@ -1,0 +1,4 @@
+dossier test
+je n'arrive pas à placer le site sur uns erveur kimsufi
+version windows de moodle, ne pas utiliser sur un serveur de prod
+il ne détecte pas curl
