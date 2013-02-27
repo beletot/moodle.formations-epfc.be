@@ -31,6 +31,9 @@ class JController {
 		//$query .= "WHERE i.code_motif_transf is Null ";
       	$query .= "ORDER BY e.nom, e.prenom ASC ";
 		//$query .= "ROWS 1 TO 10 ";
+		
+		//echo $query;
+		//die();
 		$db->sql = $query;
 		if(!$db->query()){
 			echo $db->errorMsg;
@@ -42,10 +45,15 @@ class JController {
 		
 		$model = new modelUsers;
 		foreach ($rows as $row ) {
+			$row['firstname'] = utf8_encode(strtolower($row['firstname']));
+			$row['lastname'] = utf8_encode(strtolower($row['lastname']));
+			
+			$row['firstname'] = ucfirst($row['firstname']);
+			$row['lastname'] = ucfirst($row['lastname']);
+			
 			$row['username'] = $model->createUsername($row);
 			$row['password'] = $model->createPassword($row);
-			$row['firstname'] = ucfirst(strtolower($row['firstname']));
-			$row['lastname'] = ucfirst(strtolower($row['lastname']));
+			
 			unset ($row['birthdate']);
 			
 			$users[$row['username']] = $row;

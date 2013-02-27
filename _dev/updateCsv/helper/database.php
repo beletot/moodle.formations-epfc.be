@@ -37,7 +37,7 @@ class database {
 		$password 	= 'epfccfpe';
 		$database 	= 'isis:c:\epfc1213.fdb';
 		//$this -> _connection = @ibase_connect($database, $user, $password, 'UTF8');
-		$this -> connection = @ibase_connect($database, $user, $password, 'UTF8');
+		$this -> connection = @ibase_connect($database, $user, $password, 'ISO8859_1');
 		
 		if (!$this -> connection) {
 			$this -> errorMsg = "Impossible de se connecter : " . ibase_errmsg();
