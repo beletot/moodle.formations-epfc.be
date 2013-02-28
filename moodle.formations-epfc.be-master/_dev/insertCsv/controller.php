@@ -6,6 +6,4 @@
 //update old
 //delete record
 //write log in file
-class JController {
-}
 ?>
