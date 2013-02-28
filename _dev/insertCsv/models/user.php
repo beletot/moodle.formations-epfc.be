@@ -21,6 +21,8 @@ class userModel {
 	 * we compare users in moodle with epfc et do update, insert or delete
 	 */
 	public function updateMoodle($usersMoodle, $usersEpfc) {
+		echo 'records in csv file '.count($usersEpfc).'<br />';
+		
 		//checking date;
 		$usersToUpdate = array_intersect_key($usersMoodle, $usersEpfc);
 		if($usersToUpdate){
@@ -91,7 +93,6 @@ class userModel {
 			echo $db -> errorMsg;
 			return false;
 		}
-		
 		return $db->getAffectedRows();
 	
 	}
@@ -116,7 +117,7 @@ class userModel {
 			echo $db -> errorMsg;
 			return false;
 		}
-		
+		echo 'usersToAdd '.$db->getAffectedRows().'<br />';
 		return $db->getAffectedRows();
 	}
 	/*
@@ -138,7 +139,7 @@ class userModel {
 			echo $db -> errorMsg;
 			return false;
 		}
-		
+		echo 'usersToDelete '.$db->getAffectedRows().'<br />';
 		return $db->getAffectedRows();
 	}
 

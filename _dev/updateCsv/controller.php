@@ -21,16 +21,24 @@ class JController {
 	 * TODO update user
 	 * TODO The password must have at least 8 characters, at least 1 digit(s), at least 1 lower case letter(s), at least 1 upper case letter(s), at least 1 non-alphanumeric character(s) 
 	 * 		table adding modified + trigger on email adress ?
+	 * TODO add excludeSection / exclude id_pers
+	 * TODO adding id pers et student ?
 	 * suspend user in moodle if not exist in external database
 	 */
 	public function getUsers (){
 		$db = new database;
 		$query = "SELECT '' \"username\", '' \"password\" ,e.prenom \"firstname\" , e.nom \"lastname\", e.email \"email\" , e.date_naiss \"birthdate\", e.date_created \"created\", e.date_modified \"modified\" ";
 		$query .= "FROM etudiants e ";
-		//$query .= "inner join inscriptions i on e.mat_etud = i.mat_etud ";
-		//$query .= "WHERE i.code_motif_transf is Null ";
-      	$query .= "ORDER BY e.nom, e.prenom ASC ";
-		//$query .= "ROWS 1 TO 10 ";
+		$query .= "UNION  ";
+		//getting teacher
+		$query .= "SELECT DISTINCT '' \"username\", '' \"password\" ,p.prenom \"firstname\" , p.nom \"lastname\", p.email \"email\" , p.date_naiss \"birthdate\", p.date_created \"created\", p.date_modified \"modified\" ";
+		$query .= "FROM horaires h ";
+		$query .= "INNER JOIN personne p on h.id_Pers = p.id_Pers ";
+		$query .= "INNER JOIN classes c on h.no_classe = c.no_classe ";
+		$query .= "WHERE c.id_Section not in (188, 189, 190) and p.id_Pers <> '1TESTT1' ";
+      	//not working with union
+      	//$query .= "ORDER BY nom, prenom ASC ";
+		//$query .= "ROWS 1 TO 5 ";
 		
 		//echo $query;
 		//die();
