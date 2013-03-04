@@ -33,15 +33,16 @@ try {
 	//$return = $ftp->store('csv','enrolments.csv');
 	
 	//getUSers
-	$users = $controller->getUsers();
+	//$users = $controller->getUsers();
 	//echo '<pre>'.print_r($users,true).'</pre>';
-	$csv->createFile($users, 'users');
+	//$csv->createFile($users, 'users');
 	//echo '<pre>'.print_r($rows,true).'</pre>';
 	
 	//getCourses
-	//$courses = $controller->getCourses();
-	//echo '<pre>'.print_r($courses,true).'</pre>';
-	//$csv->createFile($courses, 'courses');
+	$courses = $controller->getCourses();
+	echo 'courses '.count($courses).'<br />';
+	echo '<pre>'.print_r($courses,true).'</pre>';
+	$csv->createFile($courses, 'courses');
 	
 	//$controller->ftpPush('directory.csv');
 } catch (Exception $e) {
