@@ -2,9 +2,16 @@
 class JController {
 	//TODO merged courses
 	public function getEnrolments (){
+		$model = new modelEnrolments;
+		
+		//$teachers = $model->getTeachers();
+		$students = $model->getStudents();
+		die(__LINE__.' model/getEnrolments'.'<br />');
+		
 		$db = new database;
 		$sql = '';
-		$query = "SELECT 'add', 'student', MAT_ETUD, NO_CLASSE ";
+		//Get student
+		$query = "SELECT 'add', 'student', '' \"username\", NO_CLASSE";
 		$query .= "FROM INSCRIPTIONS ";
 		$query .= "WHERE CODE_MOTIF_TRANSF is Null ";
       	$query .= "ORDER BY NO_CLASSE ASC ";
@@ -28,13 +35,13 @@ class JController {
 	public function getUsers (){
 		$db = new database;
 		//get student
-		$query = "SELECT '' \"username\", '' \"password\" ,e.prenom \"firstname\" , e.nom \"lastname\", e.email \"email\" , e.date_naiss \"birthdate\", e.date_created \"created\", e.date_modified \"modified\" ";
+		$query = "SELECT mat_etud \"id\", e.username \"username\", '' \"password\" ,e.prenom \"firstname\" , e.nom \"lastname\", e.email \"email\" , e.date_naiss \"birthdate\", e.date_created \"created\", e.date_modified \"modified\", 'student' \"type\" ";
 		$query .= "FROM etudiants e ";
 		$query .= "UNION  ";
 		//getting teacher
-		$query .= "SELECT DISTINCT weu.login \"username\", '' \"password\" ,p.prenom \"firstname\" , p.nom \"lastname\", p.email \"email\" , p.date_naiss \"birthdate\", p.date_created \"created\", p.date_modified \"modified\" ";
+		$query .= "SELECT DISTINCT p.id_extranet \"id\", weu.login \"username\", '' \"password\" ,p.prenom \"firstname\" , p.nom \"lastname\", p.email \"email\" , p.date_naiss \"birthdate\", p.date_created \"created\", p.date_modified \"modified\", 'teacher' \"type\" ";
 		$query .= "FROM horaires h ";
-		$query .= "INNER JOIN personne p on h.id_Pers = p.id_Pers ";
+		$query .= "INNER JOIN personne p on p.id_Pers = h.id_Pers ";
 		$query .= "INNER JOIN w_ext_users weu on weu.id = p.id_extranet ";
 		$query .= "INNER JOIN classes c on h.no_classe = c.no_classe ";
 		$query .= "WHERE c.id_Section not in (188, 189, 190) and p.id_Pers <> '1TESTT1' ";
@@ -61,10 +68,11 @@ class JController {
 			$row['firstname'] = ucfirst($row['firstname']);
 			$row['lastname'] = ucfirst($row['lastname']);
 			
-			//teacher have user have already a username for the extranet 
+			//user have not username
 			if(!$row['username']){$row['username'] = $model->createUsername($row);}
 			$row['password'] = $model->createPassword($row);
 			
+			unset ($row['id']);
 			unset ($row['birthdate']);
 			
 			$users[$row['username']] = $row;

@@ -25,6 +25,7 @@ class csv {
 	 * return csv content
 	 * @return array with object
 	 */
+	 //TODO CHECKING nb lines with the 1000 limitation
 	public function read($path) {
 		if (($handle = fopen('csv' . DS . $path, "r")) !== FALSE) {
 			$header = true;

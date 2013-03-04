@@ -10,7 +10,7 @@ class database {
 	 *
 	 * @var mixed
 	 */
-	protected $connection = '';
+	protected $_connection = '';
 
 	/**
 	 * The query sql string
@@ -33,13 +33,19 @@ class database {
 	 * @return  _connection
 	 */
 	public function __construct() {
-		$user 		= 'sysdba';
-		$password 	= 'epfccfpe';
-		$database 	= 'isis:c:\epfc1213.fdb';
-		//$this -> _connection = @ibase_connect($database, $user, $password, 'UTF8');
-		$this -> connection = @ibase_connect($database, $user, $password, 'ISO8859_1');
+		$config = new config;
+		$user = $config->db_user;
+		$password = $config->db_password;
+		$database = $config->db_database;
 		
-		if (!$this -> connection) {
+		/*$user 		= 'sysdba';
+		$password 	= 'epfccfpe';
+		$database 	= 'isis:c:\epfc1213.fdb';*/
+		
+		//$this -> _connection = @ibase_connect($database, $user, $password, 'UTF8');
+		$this->_connection = @ibase_connect($database, $user, $password, 'ISO8859_1');
+		
+		if (!$this->_connection) {
 			$this -> errorMsg = "Impossible de se connecter : " . ibase_errmsg();
 			echo $this -> errorMsg;
 			exit;
@@ -65,6 +71,43 @@ class database {
 		//$text = utf8_decode($text);
 		return $text;	
 	}
+	/**
+	 * Get a database escaped string
+	 *
+	 * @param	string	The string to be escaped
+	 * @param	boolean	Optional parameter to provide extra escaping
+	 * @return	string
+	 * TODO not working
+	 */
+	public function __getEscaped($text, $extra = false)
+	{
+		$result = mysqli_real_escape_string($this->_connection, $text);
+		if ($extra) {
+			$result = addcslashes($result, '%_');
+		}
+		return $result;
+	}
+	/**
+	 * Description
+	 *
+	 * @return	int	The number of affected rows in the previous operation
+	 * @since	1.0.5
+	 */
+	public function getAffectedRows()
+	{
+		return ibase_affected_rows($this->_connection);
+	}
+	/**
+	 * Get a quoted database escaped string
+	 *
+	 * @param	string	A string
+	 * @param	boolean	Default true to escape string, false to leave the string unchanged
+	 * @return	string
+	 */
+	public function quote($text, $escaped = true)
+	{
+		return '\''.($escaped ? $this->getEscaped($text) : $text).'\'';
+	}
 	
 	public function query (){
 		return $this->execute();
@@ -78,20 +121,21 @@ class database {
 	 * @since   11.1
 	 * @throws  JDatabaseException
 	 */
+	 //TODO retun ibase error
 	public function execute()
 	{
 	 		
 		//TODO prepare query
 			
 	 	// Execute the query.
-		$this->cursor = ibase_query($this->connection, $this->sql);
+		$this->cursor = ibase_query($this->_connection, $this->sql);
 
 		// If an error occurred handle it.
 		if (!$this->cursor) {
 			//echo 'error query <br />';
 			//die(__LINE__.' pas de retour ibase');
-			$this->errorNum = (int) ibase_errcode($this->connection);
-			$this->errorMsg = (string) ibase_errmsg($this->connection).' SQL='.$sql;
+			$this->errorNum = (int) ibase_errcode($this->_connection);
+			$this->errorMsg = (string) ibase_errmsg($this->_connection).' SQL='.$sql;
 		}
 		return $this->cursor;	
 	}

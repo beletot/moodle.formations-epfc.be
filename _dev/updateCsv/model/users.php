@@ -2,21 +2,61 @@
 
 class modelUsers {
 	/*
-	 * createUsername
+	 * createUsername 
+	 * adding birtday if the user is a student
 	 * @return string
-	 * TODO can't format date.birthday
 	 */
 	public function createUsername($user){
+		$birthdate = null;
+		
 		//echo $user['firstname'].' '.$user['lastname'].'<br />';
 		$firstname = $this->cleanAccent($user['firstname']);
 		$lastname = $this->cleanAccent($user['lastname']);
-		$date = new DateTime($user['birthdate']);
-		$birthdate = $date->format('dm');
-	            
-	    $lastname = substr($lastname, 0 ,14);
+		
+		$lastname = substr($lastname, 0 ,14);
 	    $firstname = substr($firstname, 0 ,2);
+		$username = strtolower($firstname.$lastname);
+		
+		if($user['type'] == 'student'){
+			$date = new DateTime($user['birthdate']);
+			$birthdate = $date->format('dm');	
+			$username = $birthdate.$username;
+			$user['username'] = $username;
+			
+			//update database
+			$this->updateUser($user);
+			return $username;	
+		}
+	            
 		//echo $birthdate.$firstname.$lastname.'<br />';
-	    return strtolower($birthdate.$firstname.$lastname);	
+	    return $username;
+	}
+	
+	/*
+	 * updateUser
+	 * push username into etudiants table
+	 * TODO getAffectedRows not returning
+	 */
+	protected function updateUser($row){
+		
+		//echo '<pre>'.print_r($row,true).'</pre>';
+		//die();
+		$query = null;
+		$db = new database;
+		$query .= "UPDATE ETUDIANTS SET ";
+		$query .= "username = '".$row['username']."' ";
+		$query .= "WHERE mat_etud = '".$row['id']."' ; ";
+		
+		//echo $query;
+		//die();
+		$db -> sql = $query;
+		if (!$db -> query()) {
+			echo $db -> errorMsg;
+			return false;
+		}
+		//echo $db->getAffectedRows();
+		return true;
+		//die(__LINE__.' model / users'.'<br />');
 	}
 	
 	/*
