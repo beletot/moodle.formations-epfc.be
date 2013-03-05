@@ -1,25 +1,18 @@
 <?php
 class JController {
-	//TODO merged courses
+	/*
+	 * getEnrolments
+	 * TODO respPeda + secretary -> create group acces ?
+	 */
 	public function getEnrolments (){
 		$model = new modelEnrolments;
 		
-		//$teachers = $model->getTeachers();
+		$teachers = $model->getTeachers();
 		$students = $model->getStudents();
-		die(__LINE__.' model/getEnrolments'.'<br />');
+		$enrolments = array_merge($teachers, $students);
+		//die(__LINE__.' model/getEnrolments'.'<br />');
 		
-		$db = new database;
-		$sql = '';
-		//Get student
-		$query = "SELECT 'add', 'student', '' \"username\", NO_CLASSE";
-		$query .= "FROM INSCRIPTIONS ";
-		$query .= "WHERE CODE_MOTIF_TRANSF is Null ";
-      	$query .= "ORDER BY NO_CLASSE ASC ";
-		$query .= "ROWS 1 TO 10 ";
-		$db->sql = $query;
-		$db->query();
-		$rows = $db->loadRowList();
-		return $rows;
+		return $enrolments;
 	}
 	
 	/*
@@ -123,10 +116,21 @@ WHERE c.no_classe is not null AND s.id_section not in (188, 189, 190)
 		 //TODO date de début et date de fin
 		 //TODO section et uf alternative / adding if in the query
 		$db = new database;
+		$where = null;
+		$config = new config;
+		if(count($config->enrolmentsUfExclude) >= 1){$where[] = ' u.id_uf NOT IN ('.implode(', ', $config->enrolmentsUfExclude).') ';}
+		if(count($config->enrolmentsSectionsExclude) >= 1){$where[] = ' s.id_section NOT IN ('.implode(', ', $config->enrolmentsSectionsExclude).') ';}
+		if(count($config->enrolmentsClassesExclude) >= 1){$where[] = ' c.no_classe NOT IN ('.implode(', ', $config->enrolmentsClassesExclude).') ';}
+		
+		
 		$query = "SELECT c.no_classe \"id\", c.id_uf, u.denom \"fullname\", u.denom_crt \"shortname\", 'summary' \"summary\" ";
 		$query .= "FROM classes c ";
 		$query .= "inner join uf u on u.id_uf = c.id_uf ";
-		//$query .= "WHERE i.code_motif_transf is Null ";
+		$query .= "inner join sections s on s.id_section = c.id_section ";
+		if($where){
+			$query .= "WHERE ".implode(' AND ',$where)." ";
+		}
+		
       	//$query .= "ORDER BY e.nom, e.prenom ASC ";
 		$query .= "ROWS 1 TO 10 ";
 		echo $query;

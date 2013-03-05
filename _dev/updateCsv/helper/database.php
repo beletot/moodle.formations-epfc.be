@@ -79,8 +79,9 @@ class database {
 	 * @return	string
 	 * TODO not working
 	 */
-	public function __getEscaped($text, $extra = false)
+	public function getEscaped($text, $extra = false)
 	{
+		return "'";	
 		$result = mysqli_real_escape_string($this->_connection, $text);
 		if ($extra) {
 			$result = addcslashes($result, '%_');

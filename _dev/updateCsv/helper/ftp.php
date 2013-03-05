@@ -17,6 +17,8 @@ class ftp {
 		$ftp_user_name = $config->ftp_user_name;
 		$ftp_user_pass = $config->ftp_user_pass;
 		//si le mot de passe est mauvais il ne donne pas d'erreur
+		
+		$remoteFolder = '_dev/insertCsv/csv/';
 
 		$return = new stdclass;
 		$return -> error = 0;
@@ -54,11 +56,11 @@ class ftp {
 		//die();
 		if (!$fp) {
 			$return -> error = 1;
-			$return -> comment = 'Erreur ouverture fichier sql';
+			$return -> comment = 'Erreur ouverture fichier';
 			return $return;
 		}
 
-		if (ftp_fput($conn_id, $fileName, $fp, FTP_ASCII)) {
+		if (ftp_fput($conn_id, $remoteFolder.$fileName, $fp, FTP_ASCII)) {
 			//if (ftp_put($conn_id, $fileName, $localFolder.DS.$fileName, FTP_ASCII)) {
 			//crash if (ftp_fput($conn_id, $fileName, $fp, FTP_BINARY)) {
 			//ftp_put($connexionFTP, CHEMIN_REPERTOIRE_FTP.$nomFichier, $cheminFichier, FTP_BINARY);

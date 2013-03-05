@@ -5,7 +5,7 @@
  * TODO db escape query ?
  * TODO delete limit record into sql
  */
- echo 'using dev database <br />';
+ echo '<div style="background-color:red;color:white;padding:5px;margin:50px;">using dev database / checking query limit</div>';
 define('_JEXEC',true);
 define('DS', DIRECTORY_SEPARATOR);
 $return = null;
@@ -30,25 +30,26 @@ try {
 	
 	//getUSers
 	$users = $controller->getUsers();
-	echo '<pre>'.print_r($users,true).'</pre>';
-	//$csv->createFile($users, 'users');
+	//echo '<pre>'.print_r($users,true).'</pre>';
+	$csv->createFile($users, 'users');
 	//echo '<pre>'.print_r($rows,true).'</pre>';
+	$return[] = $ftp->store('csv','users.csv');
+	//curl insert into database
 	
 	//getEnrolments		
-	//$enrolments = $controller->getEnrolments();
+	$enrolments = $controller->getEnrolments();
 	//echo '<pre>'.print_r($enrolments,true).'</pre>';
-	//$csv->createFile($enrolments, 'enrolments');
-	// store know on the extranet/calendar/ ftp folder
-	//$return = $ftp->store('csv','enrolments.csv');
+	$csv->createFile($enrolments, 'enrolments');
+	$return[] = $ftp->store('csv','enrolments.csv');
 	
 	//getCourses
 	//http://docs.moodle.org/22/en/Bulk_course_upload
-	/*$courses = $controller->getCourses();
-	echo 'courses '.count($courses).'<br />';
-	echo '<pre>'.print_r($courses,true).'</pre>';
-	$csv->createFile($courses, 'courses');*/
+	$courses = $controller->getCourses();
+	//echo 'courses '.count($courses).'<br />';
+	//echo '<pre>'.print_r($courses,true).'</pre>';
+	$csv->createFile($courses, 'courses');
+	$return[] = $ftp->store('csv','courses.csv');
 	
-	//$controller->ftpPush('directory.csv');
 } catch (Exception $e) {
     echo 'Error : ',  $e->getMessage(), '<br />';
     //$error = $e->getMessage();
