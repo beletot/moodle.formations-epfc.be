@@ -29,7 +29,7 @@ class csv {
 		foreach($line as $key=>$value){
 			$header[] = $key;
 		}
-		echo '<pre>'.print_r($header,true).'</pre>';	
+		//echo '<pre>'.print_r($header,true).'</pre>';	
 		return $header;
 	}
 	

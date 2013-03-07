@@ -23,6 +23,7 @@ class JController {
 	 * 		table adding modified + trigger on email adress ?
 	 * TODO add excludeSection / exclude id_pers
 	 * TODO adding id pers et student ?
+	 * TODO delete user Test in the table
 	 * suspend user in moodle if not exist in external database
 	 */
 	public function getUsers (){
@@ -40,7 +41,7 @@ class JController {
 		$query .= "WHERE c.id_Section not in (188, 189, 190) and p.id_Pers <> '1TESTT1' ";
       	//not working with union
       	//$query .= "ORDER BY nom, prenom ASC ";
-		//$query .= "ROWS 1 TO 50 ";
+		//$query .= "ROWS 1 TO 10000 ";
 		
 		//echo $query;
 		//die();

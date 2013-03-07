@@ -5,30 +5,49 @@
  * TODO must came from epfc server
  * 
  */
+//ini_set('error_reporting', E_ALL);
 define('_JEXEC',true);
 define('DS', DIRECTORY_SEPARATOR);
 
 require('config.php');
-require('controller.php');
+//require('controller.php');
 require('helper'.DS.'database.php');
 require('helper'.DS.'csv.php');
 require('models'.DS.'users.php');
-require('models'.DS.'course.php');
+require('models'.DS.'courses.php');
+require('models'.DS.'enrolments.php');
 
-$model = new usersModel;
+$usersModel = new usersModel;
+$coursesModel = new coursesModel;
+$enrolmentsModel = new enrolmentsModel;
 $csv = new csv;
-try {
-	//getEnrolments		
-	//$usersMoodle = $model->getUsers();
+
+try {	
+	//push users
+	//$usersMoodle = $usersModel->getUsers();
 	//echo '<pre>' . print_r($usersMoodle, true) . '</pre>';
 	//$usersEpfc = $csv->read('users.csv');
 	//echo '<pre>' . print_r($usersEpfc, true) . '</pre>';
-	//$model->updateMoodle($usersMoodle, $usersEpfc);
+	//$usersModel->updateMoodle($usersMoodle, $usersEpfc);
 	
-	$courses = $model->getCourses();
+	//courses
+	//$coursesMoodle = $coursesModel->getCourses();
+	//$coursesEpfc = $csv->read('courses.csv');
+	//echo '<pre>' . print_r($coursesEpfc, true) . '</pre>';
+	//$coursesModel->updateMoodle($coursesMoodle, $coursesEpfc);
 	
+	//getEnrolments		
+	$enrolmentsMoodle = $enrolmentsModel->getEnrolments();
+	//echo '<pre>' . print_r($enrolmentsMoodle, true) . '</pre>';
+	$enrolmentsEpfc = $csv->read('enrolments.csv');
+	//echo '<pre>' . print_r($enrolmentsEpfc, true) . '</pre>';
+	$enrolmentsModel->updateMoodle($enrolmentsMoodle, $enrolmentsEpfc);
 	
-	
+	//http://docs.moodle.org/22/en/External_database_enrolment
+	/*# 5 minutes past 4am
+   5 4 * * * /usr/bin/php -c /path/to/php.ini /path/to/moodle/enrol/database/cli/sync.php
+	 * php -f  /home/epfc/sd/moodle/www/enrol/database/cli/sync.php    
+	 */
 	
 } catch (Exception $e) {
     echo 'Error : ',  $e->getMessage(), '<br />';

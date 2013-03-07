@@ -45,7 +45,7 @@ try {
 	$enrolments = $controller->getEnrolments();
 	//echo '<pre>'.print_r($enrolments,true).'</pre>';
 	$csv->createFile($enrolments, 'enrolments');
-	//$return[] = $ftp->store('csv','enrolments.csv');
+	$return[] = $ftp->store('csv','enrolments.csv');
 	
 	//getCourses
 	//http://docs.moodle.org/22/en/Bulk_course_upload

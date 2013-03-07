@@ -23,13 +23,14 @@ class csv {
 	/*
 	 * read
 	 * return csv content
+	 * @param	string  $key   $key for the array list
 	 * @return array with object
 	 */
 	 //TODO CHECKING nb lines with the 1000 limitation
-	public function read($path) {
+	public function read($path, $key = null) {
 		if (($handle = fopen('csv' . DS . $path, "r")) !== FALSE) {
 			$header = true;
-			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+			while (($data = fgetcsv($handle, 0, ";")) !== FALSE) {
 				$countField = count($data);
 				$fieldNames = array();
 				if ($header ==  true) {
@@ -52,7 +53,6 @@ class csv {
 
 			}
 			fclose($handle);
-			
 		}
 		return $lines;
 	}

@@ -27,21 +27,21 @@ class usersModel {
 		$usersToUpdate = array_intersect_key($usersMoodle, $usersEpfc);
 		if($usersToUpdate){
 			$this->usersToUpdate($usersToUpdate, $usersMoodle, $usersEpfc);
-			//echo '$usersToUpdate '.count($usersToUpdate).'<br />';
+			echo '$usersToUpdate '.count($usersToUpdate).'<br />';
 			//echo 'UPDATE <pre>' . print_r($usersToUpdate, true) . '</pre>';
 		}
 		
 		$usersToAdd = array_diff_key($usersEpfc, $usersMoodle);
 		if($usersToAdd){
 			$this->usersToAdd($usersToAdd);
-			//echo '$usersToAdd '.count($usersToAdd).'<br />';
+			echo '$usersToAdd '.count($usersToAdd).'<br />';
 			//echo 'add <pre>' . print_r($usersToAdd, true) . '</pre>';
 		}
 		
 		$usersToDelete = array_diff_key($usersMoodle, $usersEpfc);
 		if($usersToDelete){
 			$this->usersToDelete($usersToDelete);
-			//echo '$usersToDelete '.count($usersToDelete).'<br />';
+			echo '$usersToDelete '.count($usersToDelete).'<br />';
 			//echo 'delete <pre>' . print_r($usersToDelete, true) . '</pre>';
 		}
 	}
