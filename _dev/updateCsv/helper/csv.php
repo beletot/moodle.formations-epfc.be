@@ -29,7 +29,7 @@ class csv {
 		foreach($line as $key=>$value){
 			$header[] = $key;
 		}
-		//echo '<pre>'.print_r($header,true).'</pre>';	
+		echo '<pre>'.print_r($header,true).'</pre>';	
 		return $header;
 	}
 	
@@ -42,7 +42,7 @@ class csv {
 	public function read($path) {
 		if (($handle = fopen('csv' . DS . $path, "r")) !== FALSE) {
 			$header = true;
-			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+			while (($data = fgetcsv($handle, 0, ";")) !== FALSE) {
 				$countField = count($data);
 				$fieldNames = array();
 				if ($header ==  true) {

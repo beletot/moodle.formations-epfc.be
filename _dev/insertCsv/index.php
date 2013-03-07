@@ -1,24 +1,31 @@
 <?php
 //loading moodle config
 //require('../../config.php');
+/*
+ * TODO must came from epfc server
+ * 
+ */
 define('_JEXEC',true);
 define('DS', DIRECTORY_SEPARATOR);
 
+require('config.php');
 require('controller.php');
 require('helper'.DS.'database.php');
 require('helper'.DS.'csv.php');
-require('models'.DS.'user.php');
+require('models'.DS.'users.php');
+require('models'.DS.'course.php');
 
-$model = new userModel;
+$model = new usersModel;
 $csv = new csv;
 try {
 	//getEnrolments		
-	$usersMoodle = $model->getUsers();
+	//$usersMoodle = $model->getUsers();
 	//echo '<pre>' . print_r($usersMoodle, true) . '</pre>';
-	$usersEpfc = $csv->read('users.csv');
+	//$usersEpfc = $csv->read('users.csv');
 	//echo '<pre>' . print_r($usersEpfc, true) . '</pre>';
-	//die();
-	$model->updateMoodle($usersMoodle, $usersEpfc);
+	//$model->updateMoodle($usersMoodle, $usersEpfc);
+	
+	$courses = $model->getCourses();
 	
 	
 	

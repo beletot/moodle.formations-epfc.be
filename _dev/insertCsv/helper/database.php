@@ -52,10 +52,12 @@ class database {
 	 */
 	public function __construct() {
 		// Get some basic values from the options.
-		$options['host'] = 'mysql51-47.pro';
-		$options['user'] = 'formatiormoodle';
-		$options['password'] = 'V8zpnsxq';
-		$options['database'] = 'formatiormoodle';
+		$config = new config;
+		
+		$options['host'] = 'localhost';
+		$options['user'] = $config->db_user;
+		$options['password'] = $config->db_password;
+		$options['database'] = $config->db_database;
 		$options['select'] = (isset($options['select'])) ? (bool)$options['select'] : true;
 		$options['port'] = null;
 		$options['socket'] = null;

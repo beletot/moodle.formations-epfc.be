@@ -1,5 +1,5 @@
 <?php
-class userModel {
+class usersModel {
 	public function getUsers() {
 		$db = new database;
 		$query = "SELECT username, password, lastname, firstname, email, created, modified ";

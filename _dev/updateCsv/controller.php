@@ -40,7 +40,7 @@ class JController {
 		$query .= "WHERE c.id_Section not in (188, 189, 190) and p.id_Pers <> '1TESTT1' ";
       	//not working with union
       	//$query .= "ORDER BY nom, prenom ASC ";
-		//$query .= "ROWS 1 TO 5 ";
+		//$query .= "ROWS 1 TO 50 ";
 		
 		//echo $query;
 		//die();
@@ -115,6 +115,8 @@ WHERE c.no_classe is not null AND s.id_section not in (188, 189, 190)
 		 */
 		 //TODO date de début et date de fin
 		 //TODO section et uf alternative / adding if in the query
+		 //TODO ucfirst
+		 //TODO summary ?
 		$db = new database;
 		$where = null;
 		$config = new config;
@@ -123,7 +125,7 @@ WHERE c.no_classe is not null AND s.id_section not in (188, 189, 190)
 		if(count($config->enrolmentsClassesExclude) >= 1){$where[] = ' c.no_classe NOT IN ('.implode(', ', $config->enrolmentsClassesExclude).') ';}
 		
 		
-		$query = "SELECT c.no_classe \"id\", c.id_uf, u.denom \"fullname\", u.denom_crt \"shortname\", 'summary' \"summary\" ";
+		$query = "SELECT c.no_classe \"id\", '1' \"category\", lower(c.no_classe||' - '||u.denom) \"fullname\", lower(u.denom_crt) \"shortname\", 'summary' \"summary\", '0' \"visible\", c.date_modification \"modified\" ";
 		$query .= "FROM classes c ";
 		$query .= "inner join uf u on u.id_uf = c.id_uf ";
 		$query .= "inner join sections s on s.id_section = c.id_section ";
@@ -132,7 +134,7 @@ WHERE c.no_classe is not null AND s.id_section not in (188, 189, 190)
 		}
 		
       	//$query .= "ORDER BY e.nom, e.prenom ASC ";
-		$query .= "ROWS 1 TO 10 ";
+		//$query .= "ROWS 1 TO 3 ";
 		echo $query;
 		$db->sql = $query;
 		if(!$db->query()){

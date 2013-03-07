@@ -9,7 +9,7 @@ class modelEnrolments {
 	public function getTeachers(){
 		$db = new database;
 
-		$query = "SELECT DISTINCT 'add' \"operation\", 'teacher' \"role\", weu.login \"username\", h.NO_CLASSE \"idcourse\" ";
+		$query = "SELECT DISTINCT weu.login ||'-'||h.NO_CLASSE \"id\", 'add' \"operation\", 'teacher' \"role\", weu.login \"idnumber\", h.NO_CLASSE \"idcourse\" ";
 		$query .= "FROM horaires h ";
 		$query .= "INNER JOIN personne p on p.id_Pers = h.id_Pers ";
 		$query .= "INNER JOIN w_ext_users weu on weu.id = p.id_extranet ";
@@ -37,7 +37,7 @@ class modelEnrolments {
 		//$users = $csv->read('users.csv');
 		//echo '<pre>'.print_r($users,true).'</pre>';
 
-		$query = "SELECT 'add' \"operation\", 'teacher' \"role\", e.username \"username\", i.NO_CLASSE \"idcourse\"";
+		$query = "SELECT e.username||'-'||i.NO_CLASSE \"id\", 'add' \"operation\", 'teacher' \"role\", e.username \"idnumber\", i.NO_CLASSE \"idcourse\"";
 		$query .= "FROM INSCRIPTIONS i ";
 		$query .= "INNER JOIN etudiants e on e.mat_etud = i.mat_etud ";
 		$query .= "WHERE i.CODE_MOTIF_TRANSF is Null AND e.username is not null ";
