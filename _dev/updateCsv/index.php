@@ -32,11 +32,11 @@ $ftp =  new ftp;
 try {
 	
 	//getUSers
-	//$users = $controller->getUsers();
+	$users = $controller->getUsers();
 	//echo '<pre>'.print_r($users,true).'</pre>';
-	//$csv->createFile($users, 'users');
+	$csv->createFile($users, 'users');
 	//echo '<pre>'.print_r($rows,true).'</pre>';
-	//$return[] = $ftp->store('csv','users.csv');
+	$return[] = $ftp->store('csv','users.csv');
 	//$curl = new curl;
 	//$curl->get('http://moodle.epfc.eu/_dev/insertCsv/index.php');
 	
@@ -49,11 +49,11 @@ try {
 	
 	//getCourses
 	//http://docs.moodle.org/22/en/Bulk_course_upload
-	//$courses = $controller->getCourses();
+	$courses = $controller->getCourses();
 	//echo 'courses '.count($courses).'<br />';
 	//echo '<pre>'.print_r($courses,true).'</pre>';
-	//$csv->createFile($courses, 'courses');
-	//$return[] = $ftp->store('csv','courses.csv');
+	$csv->createFile($courses, 'courses');
+	$return[] = $ftp->store('csv','courses.csv');
 	
 } catch (Exception $e) {
     echo 'Error : ',  $e->getMessage(), '<br />';

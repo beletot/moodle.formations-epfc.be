@@ -37,17 +37,17 @@ class modelEnrolments {
 		//$users = $csv->read('users.csv');
 		//echo '<pre>'.print_r($users,true).'</pre>';
 
-		$query = "SELECT e.username||i.NO_CLASSE \"id\", 'add' \"operation\", 'teacher' \"role\", e.username \"idnumber\", i.NO_CLASSE \"idcourse\"";
+		$query = "SELECT e.username||i.NO_CLASSE \"id\", 'add' \"operation\", 'student' \"role\", e.username \"idnumber\", i.NO_CLASSE \"idcourse\"";
 		$query .= "FROM INSCRIPTIONS i ";
 		$query .= "INNER JOIN etudiants e on e.mat_etud = i.mat_etud ";
 		$query .= "WHERE i.CODE_MOTIF_TRANSF is Null AND e.username is not null ";
       	$query .= "ORDER BY e.username, i.NO_CLASSE ASC ";
-		$query .= "ROWS 1 TO 2000 ";
+		//$query .= "ROWS 1 TO 2000 ";
 		
 		//echo $query;
 		$db->sql = $query;
 		if(!$db->query()){
-			echo $db->errorMsg;
+			throw new Exception($db->errorMsg);
 			return false;
 		}
 		$rows = $db->loadAssocList();

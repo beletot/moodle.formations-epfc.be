@@ -1,0 +1,1 @@
+dans le fichier lib/setup -> chercher // disabled checking cron job
