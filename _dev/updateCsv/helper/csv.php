@@ -9,7 +9,7 @@ class csv {
 	 * @return true
 	 * TODO checking error
 	 */
-	public function createFile($rows, $filename){
+	public function createFile($rows, $filename, $putHeader = true){
 		$delimiter = ';';
 		$enclosure = '"';
 		//open or create csv file
@@ -17,8 +17,11 @@ class csv {
 		$handle = fopen($filename, "w");
 		
 		//put header
-		$header = $this->getHeader($rows);
-		fputcsv($handle, $header, $delimiter, $enclosure);
+		if($putHeader === true){
+			$header = $this->getHeader($rows);
+			fputcsv($handle, $header, $delimiter, $enclosure);
+		}
+		
 		foreach($rows as $row){
 			fputcsv($handle, $row, $delimiter, $enclosure);
 		}

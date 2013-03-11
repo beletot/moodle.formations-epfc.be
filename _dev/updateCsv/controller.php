@@ -29,7 +29,7 @@ class JController {
 	public function getUsers (){
 		$db = new database;
 		//get student
-		$query = "SELECT mat_etud \"id\", e.username \"username\", '' \"password\" ,e.prenom \"firstname\" , e.nom \"lastname\", e.email \"email\" , e.date_naiss \"birthdate\", e.date_created \"created\", e.date_modified \"modified\", 'student' \"type\" ";
+		$query = "SELECT mat_etud \"id\", e.username \"username\", '' \"password\" ,e.prenom \"firstname\" , e.nom \"lastname\", lower(e.email) \"email\" , e.date_naiss \"birthdate\", e.date_created \"created\", e.date_modified \"modified\", 'student' \"type\" ";
 		$query .= "FROM etudiants e ";
 		$query .= "UNION  ";
 		//getting teacher
@@ -82,38 +82,6 @@ class JController {
 	 * @return array
 	 */
 	public function getCourses(){
-		//timecreated
-		//timemodified
-		//format
-		//idnumber ?
-		//category
-		/*
-		 * SELECT c.no_classe "id",
-       c.id_uf,
-       u.denom "fullname",
-       u.denom_crt "shortname",
-       'summary' "summary",
-       s.denom,
-       s.SECTION_COURT,
-       ds.nom_domaine,
-       ds.groupe,
-       rp.nom,
-       rp.prenom
-FROM classes c
-     inner join uf u on u.id_uf = c.id_uf
-     inner join sections s on s.id_section = c.id_section
-     inner join domaine_section ds on ds.id_domaine = s.id_domaine_section
-     right join resp_peda rp on rp.id_resp_peda = s.id_resp_peda
-ROWS 1 TO 10
-		 * 
-		 * SELECT c.no_classe "id",
-       u.denom "fullname",
-       u.denom_crt "shortname",
-FROM classes c
-     inner join uf u on u.id_uf = c.id_uf
-     inner join sections s on s.id_section = c.id_section
-WHERE c.no_classe is not null AND s.id_section not in (188, 189, 190)
-		 */
 		 //TODO date de début et date de fin
 		 //TODO section et uf alternative / adding if in the query
 		 //TODO ucfirst
@@ -126,10 +94,11 @@ WHERE c.no_classe is not null AND s.id_section not in (188, 189, 190)
 		if(count($config->enrolmentsClassesExclude) >= 1){$where[] = ' c.no_classe NOT IN ('.implode(', ', $config->enrolmentsClassesExclude).') ';}
 		
 		
-		$query = "SELECT c.no_classe \"id\", '1' \"category\", lower(c.no_classe||' - '||u.denom) \"fullname\", lower(u.denom_crt) \"shortname\", 'summary' \"summary\", '0' \"visible\", c.date_modification \"modified\" ";
+		$query = "SELECT c.no_classe \"id\", '1' \"category\", lower(c.no_classe||' - '||u.denom) \"fullname\", lower(u.denom_crt) \"shortname\", 'summary' \"summary\", '0' \"visible\", h.date_deb \"startdate\", h.date_fin \"stopdate\", c.date_modification \"modified\" ";
 		$query .= "FROM classes c ";
 		$query .= "inner join uf u on u.id_uf = c.id_uf ";
 		$query .= "inner join sections s on s.id_section = c.id_section ";
+		$query .= "inner join horaires h on h.no_classe = c.no_classe ";
 		if($where){
 			$query .= "WHERE ".implode(' AND ',$where)." ";
 		}

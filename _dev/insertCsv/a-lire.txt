@@ -1,0 +1,5 @@
+ini_set("max_execution_time","360");   
+dans les fichiers 
+
+enrol/database/cli/sync.php
+auth/db/cli/sync_users.php

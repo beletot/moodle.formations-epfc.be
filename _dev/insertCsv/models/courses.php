@@ -51,8 +51,9 @@ class coursesModel {
 		$coursesToDelete = array_diff_key($coursesMoodle, $coursesEpfc);
 		if ($coursesToDelete) {
 			//$this -> coursesToDelete($coursesToDelete);
+			echo 'we do not delete courses TODO disabled course';
 			echo '$coursesToDelete ' . count($coursesToDelete) . '<br />';
-			//echo 'delete <pre>' . print_r($coursesToDelete, true) . '</pre>';
+			echo 'delete <pre>' . print_r($coursesToDelete, true) . '</pre>';
 		}
 	}
 
@@ -68,9 +69,12 @@ class coursesModel {
 			$courseEpfc = $coursesEpfc[$value -> id];
 			$courseMoodle = $coursesMoodle[$value -> id];
 			
+			$courseEpfc->startdate = strtotime($courseEpfc -> startdate);
 			$courseEpfc->modified = strtotime($courseEpfc -> modified);
 
 			//echo 'update <pre>' . print_r($userMoodle, true) . '</pre>';
+			// if true to make global update
+			///if (true) {
 			if ($courseEpfc -> modified > $courseMoodle -> modified) {
 				//echo 'moodle need to be updated <br />';
 				$updateDatabase[] = $courseEpfc;
@@ -98,10 +102,12 @@ class coursesModel {
 			$query .= "`fullname` = " . $db -> quote($row -> fullname) . ", ";
 			$query .= "`shortname` = " . $db -> quote($row -> shortname) . ", ";
 			$query .= "`category` = 1 , ";
+			$query .= "`startdate` = " . $db -> quote($row -> startdate) . ", ";
 			$query .= "`visible` = 1 , ";
 			$query .= "`timemodified` = " . $db -> quote($row -> modified) . " ";
 			$query .= "WHERE `idnumber` = " . $db -> quote($row -> id) . "; ";
 		}
+		//die($query);
 		$db -> sql = $query;
 		if (!$db -> queryBatch()) {
 			echo $db -> errorMsg;
@@ -130,6 +136,7 @@ class coursesModel {
                             'shortname' => false);*/                  
         
         foreach ($rows as $row) {
+        	unset($row->stopdate);
 			$row->category = 1;         
 			$line = null;
 			foreach($row as $key => $value){        

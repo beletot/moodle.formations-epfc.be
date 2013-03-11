@@ -37,15 +37,6 @@ try {
 	$csv->createFile($users, 'users');
 	//echo '<pre>'.print_r($rows,true).'</pre>';
 	$return[] = $ftp->store('csv','users.csv');
-	//$curl = new curl;
-	//$curl->get('http://moodle.epfc.eu/_dev/insertCsv/index.php');
-	
-	//getEnrolments	
-	//So slow -> check student	
-	$enrolments = $controller->getEnrolments();
-	//echo '<pre>'.print_r($enrolments,true).'</pre>';
-	$csv->createFile($enrolments, 'enrolments');
-	$return[] = $ftp->store('csv','enrolments.csv');
 	
 	//getCourses
 	//http://docs.moodle.org/22/en/Bulk_course_upload
@@ -54,6 +45,18 @@ try {
 	//echo '<pre>'.print_r($courses,true).'</pre>';
 	$csv->createFile($courses, 'courses');
 	$return[] = $ftp->store('csv','courses.csv');
+	
+	//getEnrolments	
+	//So slow -> check student	
+	$enrolments = $controller->getEnrolments();
+	//echo '<pre>'.print_r($enrolments,true).'</pre>';
+	// i use mysql load data file / don't need header
+	$csv->createFile($enrolments, 'enrolments', false);
+	$return[] = $ftp->store('csv','enrolments.csv');
+	
+	//inserting data in moodle.epfc.eu database
+	$curl = new curl;
+	$curl->get('http://moodle.epfc.eu/_dev/insertCsv/index.php');
 	
 } catch (Exception $e) {
     echo 'Error : ',  $e->getMessage(), '<br />';
