@@ -15,8 +15,3 @@ tester la création des utilisateurs sur plusieurs années / demander à craig l
 
 adresse email étudiants dans notre db, le filtre ne semble pas être 100% fiable
 http://localhost/tmp/interbase/connect.php
-
-
-# user #
-0410frurbietagonzale;486a20a9;"Francisca a.";"Urbieta gonzalez";fran.urbieta@hotmail.com;;;student
-l'adresse email n'est pas bonne dans la db
