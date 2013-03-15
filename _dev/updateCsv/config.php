@@ -19,7 +19,8 @@ class config {
 	
 	//courses - exclude
 	//string must have quote
-	public $enrolmentsSectionsExclude = array(188, 189, 190);
+	public $enrolmentsSectionsExclude = array();
+	// XPSS et co -> ;: expertise pas d'étudiants 
 	public $enrolmentsUfExclude = array("'XPSS'","'XPSI'","'XPSU'");
 	public $enrolmentsClassesExclude = array();
 }
