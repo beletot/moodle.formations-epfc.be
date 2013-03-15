@@ -26,23 +26,23 @@ $csv = new csv;
 try {
 	//push users / auth/db/cli/sync_users.php       
 	$usersMoodle = $usersModel->getUsers();
-	echo '<pre>' . print_r($usersMoodle, true) . '</pre>';
-	//$usersEpfc = $csv->read('users.csv');
+	//echo '<pre>' . print_r($usersMoodle, true) . '</pre>';
+	$usersEpfc = $csv->read('users.csv');
 	//echo '<pre>' . print_r($usersEpfc, true) . '</pre>';
-	//$usersModel->updateMoodle($usersMoodle, $usersEpfc);
+	$usersModel->updateMoodle($usersMoodle, $usersEpfc);
 
 	//courses
-	//$coursesMoodle = $coursesModel->getCourses();
-	//$coursesEpfc = $csv->read('courses.csv');
+	$coursesMoodle = $coursesModel->getCourses();
+	$coursesEpfc = $csv->read('courses.csv');
 	//echo '<pre>' . print_r($coursesEpfc, true) . '</pre>';
-	//$coursesModel->updateMoodle($coursesMoodle, $coursesEpfc);
+	$coursesModel->updateMoodle($coursesMoodle, $coursesEpfc);
 
 	//getEnrolments - just pushing all records
 	/*$enrolmentsMoodle = $enrolmentsModel -> getEnrolments();
 	echo '<pre>' . print_r($enrolmentsMoodle, true) . '</pre>';
 	$enrolmentsEpfc = $csv -> read('enrolments.csv');
 	echo '<pre>' . print_r($enrolmentsEpfc, true) . '</pre>';*/
-	//$enrolmentsModel -> updateMoodle();
+	$enrolmentsModel -> updateMoodle();
 
 	//http://docs.moodle.org/22/en/External_database_enrolment
 	/*# 5 minutes past 4am
